@@ -19,19 +19,25 @@ if (import.meta.env.DEV) {
   worker.start({ onUnhandledRequest: "bypass" });
 }
 
-const container = document.getElementById("app");
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const root = createRoot(container!);
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </BrowserRouter>
-  </React.StrictMode>
-);
+(async () => {
+  // if (import.meta.env.DEV) {
+  const { worker } = await import("./mocks/browser");
+  await worker.start({ onUnhandledRequest: "bypass" });
+  //}
+  const container = document.getElementById("app");
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const root = createRoot(container!);
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <App />
+          </ThemeProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+})();
