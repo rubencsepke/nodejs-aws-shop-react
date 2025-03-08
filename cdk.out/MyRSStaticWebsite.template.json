@@ -119,6 +119,18 @@
    "Type": "AWS::CloudFront::Distribution",
    "Properties": {
     "DistributionConfig": {
+     "CustomErrorResponses": [
+      {
+       "ErrorCode": 403,
+       "ResponseCode": 200,
+       "ResponsePagePath": "/index.html"
+      },
+      {
+       "ErrorCode": 404,
+       "ResponseCode": 200,
+       "ResponsePagePath": "/index.html"
+      }
+     ],
      "DefaultCacheBehavior": {
       "AllowedMethods": [
        "GET",
@@ -215,7 +227,7 @@
      }
     ],
     "SourceObjectKeys": [
-     "6efb39b6034ac3fdb3319af6a6b01fc6092f0cc4a2a251506dd744c231e3c5c6.zip"
+     "203f4574677b945375cdbcde3abcf2e270702bbc595bb206e1f6d384c2a386a1.zip"
     ],
     "DestinationBucketName": {
      "Ref": "RSStaticWebsiteRSStaticBucket4EC952C4"

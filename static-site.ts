@@ -36,7 +36,19 @@ export class StaticSite extends Construct {
                 behaviors: [{
                     isDefaultBehavior: true
                 }]
-            }]
+            }],
+            errorConfigurations: [
+                {
+                    errorCode: 403,
+                    responseCode: 200,
+                    responsePagePath: "/index.html",
+                },
+                {
+                    errorCode: 404,
+                    responseCode: 200,
+                    responsePagePath: "/index.html",
+                },
+            ],
         })
 
         const deployment = new s3deploy.BucketDeployment(this, "RS-Bucket-Deployment", {
