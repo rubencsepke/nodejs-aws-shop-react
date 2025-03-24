@@ -30,22 +30,46 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
     if (!file) {
       return;
     }
-    
-    const response = await axios({
-      method: "GET",
-      url,
-      params: {
-        name: encodeURIComponent(file.name),
-      },
-    });
-    console.log("File to upload: ", file.name);
-    console.log("Uploading to: ", response.data);
-    const result = await fetch(response.data, {
-      method: "PUT",
-      body: file,
-    });
-    console.log("Result: ", result);
-    setFile(undefined);
+
+    const token = localStorage.getItem("authorization_token");
+    let headers = {};
+    if (token) {
+      headers = {
+        Authorization: `Basic ${token}`,
+      };
+    }
+
+    try {
+      const response = await axios({
+        method: "GET",
+        url,
+        params: {
+          name: encodeURIComponent(file.name),
+        },
+        headers
+      });
+      console.log("File to upload: ", file.name);
+      console.log("Uploading to: ", response.data);
+      const result = await fetch(response.data, {
+        method: "PUT",
+        body: file,
+      });
+      console.log("Result: ", result);
+      setFile(undefined);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        if (status === 401) {
+          alert("Unauthorized: Authorization header is not provided");
+        } else if (status === 403) {
+          alert("Forbidden: Access has been denied");
+        } else {
+          alert("Something wrong");
+        }
+      } else {
+        alert("An unexpected error occurred during upload.");
+      }
+    }
   };
   return (
     <Box>
