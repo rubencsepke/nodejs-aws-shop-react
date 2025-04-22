@@ -20,10 +20,10 @@ if (import.meta.env.DEV) {
 }
 
 (async () => {
-  // if (import.meta.env.DEV) {
-  const { worker } = await import("./mocks/browser");
-  await worker.start({ onUnhandledRequest: "bypass" });
-  //}
+  if (import.meta.env.DEV) {
+    const { worker } = await import("./mocks/browser");
+    await worker.start({ onUnhandledRequest: "bypass" });
+  }
   const container = document.getElementById("app");
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const root = createRoot(container!);
